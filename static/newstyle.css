@@ -1,0 +1,108 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #333;
+    animation: fadeInDown 1s ease-out;
+  }
+  
+  p {
+    margin: 10px 0;
+    color: #666;
+    animation: fadeIn 1s ease-out;
+  }
+  
+  .container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f7aaaa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    animation: zoomIn 1s ease-out;
+  }
+  
+  .fake {
+    color: #FF5733; /* Red color for fake prediction */
+    font-weight: bold;
+  }
+  
+  .real {
+    color: #33FF77; /* Green color for real prediction */
+    font-weight: bold;
+  }
+  
+  /* Pie chart styles */
+  .pie-chart {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #f2f2f2;
+    margin: 10px auto;
+  }
+  
+  .pie-chart::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #33FF77; /* Green color by default */
+    clip-path: polygon(50% 50%, 0 50%, 0 100%, 50% 100%);
+    transform-origin: 100% 50%;
+    transform: rotate(0deg);
+  }
+  
+  .pie-chart.fake::before {
+    background-color: #FF5733; /* Red color for fake prediction */
+  }
+  
+  .pie-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  @keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+  }
+  
+  @keyframes zoomIn {
+    from {
+        transform: scale(0.5);
+    }
+    to {
+        transform: scale(1);
+    }
+  }

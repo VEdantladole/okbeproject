@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Handle file input change event
+            $('input[name="file"]').change(function () {
+                var fileName = $(this).val().split('\\').pop(); // Get the selected file name
+                var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i; // Add more extensions if needed
+
+                // Check if the file has a valid extension
+                if (!allowedExtensions.test(fileName)) {
+                    alert("Invalid file type. Please upload a valid image file.");
+                    $(this).val(''); // Clear the file input
+                }
+            });
+
+            // Handle form submission
+            $('form').submit(function (event) {
+                var fileName = $('input[name="file"]').val().split('\\').pop(); // Get the selected file name
+
+                // Check if the file is inappropriate
+                if (fileName && fileName !== '' && is_inappropriate(fileName)) {
+                    alert("Inappropriate image. Please upload a valid image file.");
+                    event.preventDefault(); // Prevent form submission
+                }
+            });
+
+            // Function to check if the file is inappropriate
+            function is_inappropriate(fileName) {
+                // Check if the file is not in the specified directories
+                var inappropriate = !(fileName.startsWith('og_') || fileName.startsWith('fake_') || fileName.startsWith('test_'));
+                return inappropriate;
+            }
+
+            // Handle click event for the About Us link
+            $('.about-btn').click(function (e) {
+                e.preventDefault(); // Prevent default link behavior
+                // Smoothly scroll to the footer section
+                $('html, body').animate({
+                    scrollTop: $('#about-info').offset().top
+                }, 1000);
+            });
+
+            // Handle click event for the Contact Us link
+            $('.contact-btn').click(function (e) {
+                e.preventDefault(); // Prevent default link behavior
+                // Smoothly scroll to the footer section
+                $('html, body').animate({
+                    scrollTop: $('#contact-info').offset().top
+                }, 1000);
+            });
+
+            // Handle click event for the Login link
+            $('.login-btn').click(function (e) {
+                e.preventDefault();
+                openModal('loginModal');
+            });
+
+            // Handle click event for the Sign Up link
+            $('.signup-btn').click(function (e) {
+                e.preventDefault();
+                openModal('signupModal');
+            });
+
+            // Close modal when the close button is clicked
+            $('.close').click(function () {
+                var modalId = $(this).closest('.modal').attr('id');
+                closeModal(modalId);
+            });
+
+            // Close modal when clicking outside the modal content
+            $(window).click(function (event) {
+                if (event.target.className === 'modal') {
+                    closeModal(event.target.id);
+                }
+            });
+
+            function openModal(modalId) {
+                var modal = document.getElementById(modalId);
+                modal.style.display = "block";
+            }
+
+            function closeModal(modalId) {
+                var modal = document.getElementById(modalId);
+                modal.style.display = "none";
+            }
+        });
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding-top: 50px;
+            height: 200vh; /* Set the height to double the viewport height */
+            position: relative; /* Added for positioning about us container */
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input[type="file"] {
+            width: calc(100% - 20px); /* Adjusted width to accommodate padding */
+            padding: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            margin-top: 15px;
+            height: 29px;
+            width: 26%;
+            background-color: #007bff;
+            color: #fff;
+            padding: 8px;
+            border: none;
+            border-radius: 42px;
+            cursor: pointer;
+        }
+
+        .login-container,
+        .signup-container,
+        .about-container,
+        .contact-container { /* Added about-container */
+            position: absolute;
+            padding: 10px;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+        }
+
+        .login-container {
+            top: 10px;
+            right: 98px;
+        }
+
+        .signup-container {
+            top: 10px;
+            right: 10px;
+        }
+
+        .about-container { /* Styling for about container */
+            top: 10px;
+            right: 124px;
+            transform: translateX(-50%);
+        }
+
+        .contact-container { /* Styling for contact container */
+            top: 10px;
+            right: 214px;
+            transform: translateX(-50%);
+        }
+
+        .login-btn,
+        .signup-btn,
+        .about-btn,
+        .contact-btn { /* Added about-btn */
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .login-btn:hover,
+        .signup-btn:hover,
+        .about-btn:hover,
+        .contact-btn:hover { /* Added about-btn */
+            color: #0056b3;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f9f9f900;
+            padding: -2px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-width: 1025px;
+            width: 100%;
+        }
+
+        /* Styling for the About Us section */
+        #about-info,
+        #contact-info {
+            background-color: rgba(0, 0, 0, 0.5); /* Transparent black background */
+            color: #fff; /* White text color */
+            padding: 6px;
+            border-radius: 10px;
+            height: 200px;
+            width: calc(50% - 80px); /* Adjusted width for both sections */
+            margin: 0 40px; /* Added margin for spacing */
+            box-sizing: border-box; /* Include padding in width calculation */
+            float: left; /* Float the elements to align them beside each other */
+        }
+
+        /* Style for modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 19px;
+            border: 1px solid #888;
+            width: 40%;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class="flash-messages" style="color: white;">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+    <div class="login-container">
+        <a class="login-btn" href="#">Login</a>
+    </div>
+    <div class="signup-container">
+        <a class="signup-btn" href="#">Sign Up</a>
+    </div>
+    <div class="about-container"> <!-- About Us Container -->
+        <a class="about-btn" href="#">About Us</a>
+    </div>
+    <div class="contact-container"> <!-- Contact Us Container -->
+        <a class="contact-btn" href="#">Contact Us</a>
+    </div>
+    <h3>Currency Detection</h3>
+    {% if session.user_id %} <!-- Only show container if user is logged in or signed up -->
+    <div class="container">
+        <h2>Please Upload Image</h2>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*">
+            <input type="submit" value="Upload">
+        </form>
+    </div>
+    {% endif %}
+    <footer>
+        <div id="about-info">
+            <h2>About Us</h2>
+            <p>We are a team dedicated to improving counterfeit currency detection using advanced image processing and machine learning techniques.</p>
+            <p>Our mission is to ensure the integrity of financial systems by providing accurate and reliable solutions for identifying fake currency notes.</p>
+        </div>
+        <div id="contact-info">
+            <h2>Contact Us</h2>
+            <p>If you have any questions or inquiries, please feel free to reach out to us at mrunal.palande08@email.com or give us a call at +918805827152.</p>
+        </div>
+    </footer>
+
+    <!-- Add the following HTML for the login and signup modals -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Login</h2>
+            <form action="/login" method="post"> <!-- Updated the form action -->
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <br>
+                <input type="submit" value="Login">
+            </form>
+        </div>
+        <div class="login-container">
+            {% if not session.user_id %}
+            <a class="login-btn" href="#">Login</a>
+            {% else %}
+            <p>Welcome, {{ session.user_name }}! <a class="logout-btn" href="{{ url_for('logout') }}">Logout</a></p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="signupModal" class="modal">
+        <div class="modal-content1">
+            <span class="close" onclick="closeModal('signupModal')">&times;</span>
+            <h2>Sign Up</h2>
+            <form action="/register" method="post"> <!-- Updated the form action -->
+                <!-- <label for="username">Username:</label> -->
+                <input type="text" id="username" name="username" placeholder="Username" required>
+                <br>
+                <!-- <label for="password">Password:</label> -->
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <br>
+                <!-- <label for="email">Email:</label> -->
+                <input type="email" id="email" name="email" placeholder="Email" required>
+                <br>
+                <!-- <label for="name">Name:</label> -->
+                <input type="text" id="name" name="name" placeholder="First Name" required>
+                <br>
+                <!-- <label for="lastname">Last Name:</label> -->
+                <input type="text" id="lastname" name="lastname" placeholder="Last Name" required>
+                <br>
+                <!-- <label for="phone">Phone Number:</label> -->
+                <input type="tel" id="phone" name="phone" placeholder="Phone Number" required>
+                <br>
+                <input type="submit" value="Sign Up">
+            </form>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

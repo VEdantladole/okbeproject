@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='resultstyle.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #DCEDC8;
+            color: black;
+            margin: 20px;
+        }
+
+        h1, h2 {
+            color: #007bff;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+            border: 1px solid #f08888;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(239, 237, 237, 0.1);
+        }
+
+        .content-wrapper {
+            text-align: justify; /* Center align the content */
+            justify-content: center;
+            margin: 0 auto; /* Center horizontally */
+            max-width: 600px; /* Limit width to avoid stretching on larger screens */
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <h1>Result</h1>
+        <p>Detected denomination: {{ note }}</p>
+        
+        <h2>Matching Details</h2>
+        <p>Number of matches: {{ max_matches }}</p>
+        <p>Key Point Percentage: {{ kp_perc }}%</p>
+
+        <h2>AlexNet Predictions</h2>
+        <p>Predicted Class Index: {{ predicted_class_alexnet }}</p>
+        <p>AlexNet Prediction Confidence: {{ prediction_confidence_alexnet }}</p>
+        <p>AlexNet Accuracy: {{Alexnet_accuracy}}%</p>
+        <p>AlexNet Result: 
+            {% if lower_threshold <= prediction_confidence_alexnet <= upper_threshold %}
+                The AlexNet confidence level is inconclusive. Further verification may be needed.
+            {% elif prediction_confidence_alexnet > upper_threshold %}
+                The detected currency is likely genuine according to AlexNet.
+            {% else %}
+                The detected currency is likely fake according to AlexNet.
+            {% endif %}
+        </p>
+        
+
+        <h2>ResNet Predictions</h2>
+        <p>Predicted Class Index: {{ predicted_class_resnet }}</p>
+        <p>ResNet Prediction Confidence: {{ prediction_confidence_resnet }}</p>
+        <p>ResNet Accuracy: {{ResNet_accuracy}}%</p>
+        <p>ResNet Result: 
+            {% if lower_threshold <= prediction_confidence_resnet <= upper_threshold %}
+                The ResNet confidence level is inconclusive. Further verification may be needed.
+            {% elif prediction_confidence_resnet > upper_threshold %}
+                The detected currency is likely genuine according to ResNet.
+            {% else %}
+                The detected currency is likely fake according to ResNet.
+            {% endif %}
+        </p>
+        
+
+        <h2>LSTM Predictions</h2>
+        {% if lstm_predicted_class is defined %}
+        {% if lstm_predicted_accuracy is defined %}
+        <p>Predicted Class: {% if lstm_predicted_class == "fake" %} Fake {% elif lstm_predicted_class == "true" %} True {% endif %}</p>
+        <p>LSTM Prediction Accuracy: {{ lstm_predicted_accuracy }}%</p>
+            {% else %}
+        <p>LSTM Prediction Accuracy is not available.</p>
+            {% endif %}
+                {% else %}
+        <p>LSTM predictions are not available for this image.</p>
+            {% endif %}
+
+        
+        <h2>Additional Matching Details</h2>
+        <p>Number of matches: {{ max_matches }}</p>
+        <p>Key Point Percentage: {{ kp_perc }}%</p>
+
+        <h2>Additional AlexNet Predictions</h2>
+        <p>Predicted Class Index: {{ predicted_class_alexnet }}</p>
+
+
+    </div>
+</body>
+</html>

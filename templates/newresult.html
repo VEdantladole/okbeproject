@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .classification {
+            font-weight: bold;
+        }
+
+        .confidence {
+            font-style: italic;
+        }
+
+        .donut-chart {
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Container for AlexNet -->
+    <div class="container">
+        <div>
+            <h1>AlexNet</h1>
+            <p>Classification: <span class="classification">{{ classification_alexnet }}</span></p>
+            <p>Confidence: <span class="confidence">{{ confidence_alexnet }}</span></p>
+        </div>
+        <canvas id="donutChartAlexNet" class="donut-chart"></canvas>
+    </div>
+
+    <!-- Container for ResNet -->
+    <div class="container">
+        <div>
+            <h1>ResNet</h1>
+            <p>Classification: <span class="classification">{{ classification_resnet }}</span></p>
+            <p>Confidence: <span class="confidence">{{ confidence_resnet }}</span></p>
+        </div>
+        <canvas id="donutChartResNet" class="donut-chart"></canvas>
+    </div>
+
+    <!-- Container for RNN -->
+    <div class="container">
+        <div>
+            <h1>RNN</h1>
+            <p>Classification: <span class="classification">{{ classification_rnn }}</span></p>
+            <p>Confidence: <span class="confidence">{{ confidence_rnn }}</span></p>
+        </div>
+        <canvas id="donutChartRNN" class="donut-chart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Sample data (replace this with your actual data)
+        const confidence_alexnet = {{ confidence_alexnet }} * 100;
+        const confidence_resnet = {{ confidence_resnet }} * 100;
+        const confidence_rnn = {{ confidence_rnn }} * 100;
+
+        // Create donut chart for AlexNet
+        new Chart(document.getElementById('donutChartAlexNet').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: ['AlexNet Confidence'],
+                datasets: [{
+                    data: [confidence_alexnet, 100 - confidence_alexnet],
+                    backgroundColor: ['#36a2eb', '#ffffff']
+                }]
+            },
+            options: {
+                cutoutPercentage: 70,
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Create donut chart for ResNet
+        new Chart(document.getElementById('donutChartResNet').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: ['ResNet Confidence'],
+                datasets: [{
+                    data: [confidence_resnet, 100 - confidence_resnet],
+                    backgroundColor: ['#ff6384', '#ffffff']
+                }]
+            },
+            options: {
+                cutoutPercentage: 70,
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Create donut chart for RNN
+        new Chart(document.getElementById('donutChartRNN').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: ['RNN Confidence'],
+                datasets: [{
+                    data: [confidence_rnn, 100 - confidence_rnn],
+                    backgroundColor: ['#ffce56', '#ffffff']
+                }]
+            },
+            options: {
+                cutoutPercentage: 70,
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    </script>
+</body>
+</html>
